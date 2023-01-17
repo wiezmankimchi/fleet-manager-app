@@ -1,5 +1,5 @@
 datasource db {
-  provider = "sqlite"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -11,8 +11,98 @@ generator client {
 // Define your own datamodels here and run `yarn redwood prisma migrate dev`
 // to create migrations for them and apply to your dev DB.
 // TODO: Please remove the following example:
-model UserExample {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model User {
+  id                  Int              @id @default(autoincrement())
+  username            String           @unique
+  email               String?
+  firstname           String?
+  lastname            String?
+  hashedPassword      String
+  salt                String
+  resetToken          String?
+  role                Role             @default(USER)
+  resetTokenExpiresAt DateTime?
+  webAuthnChallenge   String?          @unique
+  credentials         UserCredential[]
+}
+
+model UserCredential {
+  id         String  @id
+  userId     Int
+  user       User    @relation(fields: [userId], references: [id])
+  publicKey  Bytes
+  transports String?
+  counter    BigInt
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Car {
+  id               Int       @id @default(autoincrement())
+  registration     String
+  registrationDate DateTime
+  carModelId       Int
+  createdAt        DateTime  @default(now())
+  updateAt         DateTime?
+  createdBy        Int?      @default(1)
+  updatedBy        Int?
+  Driver           Driver[]
+}
+
+model CarBrand {
+  id        Int        @id @default(autoincrement())
+  name      String
+  heName    String?
+  createdAt DateTime   @default(now())
+  updateAt  DateTime?
+  createdBy Int?       @default(1)
+  updatedBy Int?
+  CarModel  CarModel[]
+}
+
+model CarModel {
+  id         Int       @id @default(autoincrement())
+  name       String
+  heName     String?
+  carBrandId Int
+  createdAt  DateTime  @default(now())
+  updateAt   DateTime?
+  createdBy  Int?      @default(1)
+  updatedBy  Int?
+  CarBrand   CarBrand  @relation(fields: [carBrandId], references: [id])
+}
+
+model Company {
+  id        Int       @id @default(autoincrement())
+  name      String    @unique
+  address1  String?
+  address2  String?
+  city      String
+  zipcode   String
+  country   String
+  createdAt DateTime  @default(now())
+  updateAt  DateTime?
+  createdBy Int?      @default(1)
+  updatedBy Int?
+  Driver    Driver[]
+}
+
+model Driver {
+  id               Int       @id @default(autoincrement())
+  lastName         String
+  registration     String?
+  registrationDate DateTime?
+  registratonImage String?
+  companyId        Int
+  carId            Int
+  createdAt        DateTime  @default(now())
+  updateAt         DateTime?
+  createdBy        Int?      @default(1)
+  updatedBy        Int?
+  firstName        String
+  Car              Car       @relation(fields: [carId], references: [id])
+  Company          Company   @relation(fields: [companyId], references: [id])
 }

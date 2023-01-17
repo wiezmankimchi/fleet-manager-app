@@ -1,4 +1,5 @@
 import { db } from 'api/src/lib/db'
+import { logger } from 'api/src/lib/logger'
 
 export default async () => {
   try {
@@ -8,15 +9,31 @@ export default async () => {
     //
     // Update "const data = []" to match your data model and seeding needs
     //
-    const data = [
-      // To try this example data with the UserExample model in schema.prisma,
-      // uncomment the lines below and run 'yarn rw prisma migrate dev'
-      //
-      // { name: 'alice', email: 'alice@example.com' },
-      // { name: 'mark', email: 'mark@example.com' },
-      // { name: 'jackie', email: 'jackie@example.com' },
-      // { name: 'bob', email: 'bob@example.com' },
+    const carBrands = [
+      { name: 'Audi', heName: 'אודי' },
+      { name: 'BMW', heName: 'ב.מ.וו.' },
+      { name: 'Buick', heName: 'ביואיק' },
+      { name: 'Opel', heName: 'אופל' },
+      { name: 'Isuzu', heName: 'איסוזו' },
+      { name: 'Alfa Romeo', heName: 'אלפא רומאו' },
+      { name: 'Aston Martin', heName: 'אסטון מרטין' },
+      { name: 'GM', heName: 'ג׳.מ.' },
+      { name: 'GMC', heName: 'ג׳.מ.סי.' },
+      { name: 'Jeep', heName: 'ג׳יפ' },
+      { name: 'Geely', heName: 'ג׳ילי' },
+      { name: 'Dacia', heName: 'דאצ׳יה' },
+      { name: 'Dodge', heName: 'דודג׳' },
+      { name: 'DS', heName: 'די.אס.' },
+      { name: 'Daewoo', heName: 'דייהו' },
+      { name: 'Daihatsu', heName: 'דייהטסו' },
+      { name: 'Chrysler', heName: 'קריזלר' },
+      { name: 'Honda', heName: 'הונדה' },
+      { name: 'Volvo', heName: 'וולוו' },
+      { name: 'Toyota', heName: 'טויוטה' },
+      { name: 'Tesla', heName: 'טסלה' },
+      { name: 'Jaguar', heName: 'יגואר' },
     ]
+
     console.log(
       "\nUsing the default './scripts/seed.{js,ts}' template\nEdit the file to add seed data\n"
     )
@@ -24,37 +41,14 @@ export default async () => {
     // Note: if using PostgreSQL, using `createMany` to insert multiple records is much faster
     // @see: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
     Promise.all(
-      //
-      // Change to match your data model and seeding needs
-      //
-      data.map(async (data) => {
-        const record = await db.userExample.create({ data })
-        console.log(record)
+      carBrands.map(async (brand) => {
+        const newCarBrand = await db.carBrand.create({
+          data: { name: brand.name, heName: brand.heName },
+        })
+
+        logger.debug({ data: newCarBrand }, 'Added post')
       })
     )
-
-    // If using dbAuth and seeding users, you'll need to add a `hashedPassword`
-    // and associated `salt` to their record. Here's how to create them using
-    // the same algorithm that dbAuth uses internally:
-    //
-    //   import { hashPassword } from '@redwoodjs/api'
-    //
-    //   const users = [
-    //     { name: 'john', email: 'john@example.com', password: 'secret1' },
-    //     { name: 'jane', email: 'jane@example.com', password: 'secret2' }
-    //   ]
-    //
-    //   for (user of users) {
-    //     const [hashedPassword, salt] = hashPassword(user.password)
-    //     await db.user.create({
-    //       data: {
-    //         name: user.name,
-    //         email: user.email,
-    //         hashedPassword,
-    //         salt
-    //       }
-    //     })
-    //   }
   } catch (error) {
     console.warn('Please define your seed data.')
     console.error(error)
