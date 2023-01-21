@@ -161,8 +161,8 @@ const SideNav = () => {
         </div>
         {isAuthenticated && (
           <div className="text-xs">
-            logged in: {currentUser.id} {currentUser.firstName}{' '}
-            {currentUser.lastName}
+            logged in: {currentUser?.id} {currentUser?.firstName}{' '}
+            {currentUser?.lastName}
           </div>
         )}
       </aside>

@@ -42,13 +42,6 @@ const Routes = () => {
         <Route path="/companies/{page:Int}/{limit:Int}" page={CompanyCompaniesPage} name="companiesPaged" />
         <Route path="/companies" page={CompanyCompaniesPage} name="companies" />
       </Set>
-      <Set wrap={[MainLayout, ScaffoldLayout]} title="Drivers" titleTo="drivers" buttonLabel="New Driver" buttonTo="newDriver">
-        <Route path="/drivers/new" page={DriverNewDriverPage} name="newDriver" />
-        <Route path="/drivers/{id:Int}/edit" page={DriverEditDriverPage} name="editDriver" />
-        <Route path="/drivers/{id:Int}" page={DriverDriverPage} name="driver" />
-        <Route path="/drivers/{page:Int}/{limit:Int}" page={DriverDriversPage} name="driversPaged" />
-        <Route path="/drivers" page={DriverDriversPage} name="drivers" />
-      </Set>
       <Set wrap={[MainLayout, ScaffoldLayout]} title="Users" titleTo="users" buttonLabel="New User" buttonTo="newUser" private unauthenticated="login">
         <Route path="/users/new" page={UserNewUserPage} name="newUser" />
         <Route path="/users/{id:Int}/edit" page={UserEditUserPage} name="editUser" />

@@ -2,6 +2,8 @@ import { useTranslation } from 'react-i18next'
 
 import { SelectField } from '@redwoodjs/forms'
 
+import LOVSelectField from 'src/components/LOVSelectField/LOVSelectField'
+
 export const beforeQuery = ({ page = 1, limit = 10 }) => {
   return {
     variables: { page: page, limit: limit },
@@ -51,35 +53,12 @@ export const Failure = ({ error }) => (
   <div className="rw-cell-error">{error?.message}</div>
 )
 
-export const Success = ({ companies, companyId }) => {
-  const { t } = useTranslation()
+export const Success = ({ companies, companyId, name }) => {
   return (
-    <SelectField
-      name="companyId"
-      className="rw-input"
-      defaultValue={companyId || 0}
-      errorClassName="rw-input rw-input-error"
-      placeholder="Select Company"
-      validation={{
-        required: true,
-        valueAsNumber: true,
-        validate: {
-          matchesInitialValue: (value) => {
-            return (
-              value !== t('Please select an option') || t('Select an Option')
-            )
-          },
-        },
-      }}
-    >
-      <option>{t('Please select an option')}</option>
-      {companies.companies.map((company) => {
-        return (
-          <option key={company?.id} value={company?.id}>
-            {t(company.name)}
-          </option>
-        )
-      })}
-    </SelectField>
+    <LOVSelectField
+      data={companies.companies}
+      name={name}
+      defaultValue={companyId}
+    />
   )
 }
