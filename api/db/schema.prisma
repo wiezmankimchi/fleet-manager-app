@@ -49,6 +49,7 @@ model Car {
   updateAt         DateTime?
   createdBy        Int?      @default(1)
   updatedBy        Int?
+  Driver           Driver[]
 }
 
 model CarBrand {
@@ -86,21 +87,22 @@ model Company {
   updateAt  DateTime?
   createdBy Int?      @default(1)
   updatedBy Int?
+  Driver    Driver[]
 }
 
-//  model Driver {
-//   id               Int       @id @default(autoincrement())
-//   lastName         String
-//   registration     String?
-//   registrationDate DateTime?
-//   registratonImage String?
-//   companyId        Int?
-//   carId            Int?
-//   createdAt        DateTime  @default(now())
-//   updateAt         DateTime?
-//   createdBy        Int?      @default(1)
-//   updatedBy        Int?
-//   firstName        String
-//   Company          Company?  @relation(fields: [companyId], references: [id])
-//   Car              Car?      @relation(fields: [carId], references: [id])
-// }
+model Driver {
+  id               Int       @id @default(autoincrement())
+  lastName         String
+  registration     String?
+  registrationDate DateTime?
+  registratonImage String?
+  companyId        Int?
+  carId            Int?
+  createdAt        DateTime  @default(now())
+  updateAt         DateTime?
+  createdBy        Int?      @default(1)
+  updatedBy        Int?
+  firstName        String
+  Company          Company?  @relation(fields: [companyId], references: [id])
+  Car              Car?      @relation(fields: [carId], references: [id])
+}

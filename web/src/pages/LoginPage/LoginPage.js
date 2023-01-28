@@ -16,6 +16,8 @@ import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 import { toast, Toaster } from '@redwoodjs/web/toast'
 
+import { consoleLogger } from 'src/lib/formatters'
+
 const REDIRECT = routes.home()
 
 const LoginPage = ({ type }) => {
@@ -62,7 +64,7 @@ const LoginPage = ({ type }) => {
     const response = await logIn({
       ...data,
     })
-    console.log('loginpage response', response)
+    consoleLogger('loginpage response', response)
 
     if (response.message) {
       // auth details good, but user not logged in

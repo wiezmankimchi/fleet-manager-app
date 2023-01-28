@@ -2,31 +2,37 @@ import { useTranslation, Trans } from 'react-i18next'
 
 import { Link, routes } from '@redwoodjs/router'
 
-import Companies from 'src/components/Company/Companies'
+import Drivers from 'src/components/Driver/Drivers'
 import { PageLimitSelector } from 'src/components/Pagination/PageLimitSelector'
 import Pagination from 'src/components/Pagination/Pagination'
 
-export const beforeQuery = ({ page = 1, limit = 10 }) => {
+const beforeQuery = ({ page = 1, limit = 10 }) => {
   return {
     variables: { page: page, limit: limit },
   }
 }
+
 export const QUERY = gql`
-  query FindCompanies($page: Int, $limit: Int, $orderBy: CompaniesOrderBy) {
-    companies(page: $page, limit: $limit, orderBy: $orderBy) {
+  query FindDrivers($page: Int, $limit: Int, $orderBy: DriverOrderBy) {
+    drivers(page: $page, limit: $limit, orderBy: $orderBy) {
       count
-      companies {
+      drivers {
         id
-        name
-        address1
-        address2
-        city
-        zipcode
-        country
+        lastName
+        registration
+        registrationDate
+        registratonImage
+        companyId
+        carId
         createdAt
         updateAt
         createdBy
         updatedBy
+        firstName
+        Company {
+          id
+          name
+        }
       }
     }
   }
@@ -38,9 +44,9 @@ export const Empty = () => {
   const { t } = useTranslation()
   return (
     <div className="rw-text-center">
-      {t('No companies yet. ')}
-      <Link to={routes.newCompany()} className="rw-link">
-        <Trans i18nKey={'CreateOneFemale'}>{'Create one?'}</Trans>
+      {t('No drivers yet. ')}
+      <Link to={routes.newDriver()} className="rw-link">
+        <Trans i18nKey={'CreateOneMale'}>{'Create one?'}</Trans>
       </Link>
     </div>
   )
@@ -50,30 +56,30 @@ export const Failure = ({ error }) => (
   <div className="rw-cell-error">{error?.message}</div>
 )
 
-export const Success = ({ companies, page = 1, limit = 10 }) => {
+export const Success = ({ drivers, page = 1, limit = 10 }) => {
   const { t } = useTranslation()
-  return companies.count == 0 ? (
+  return drivers.count == 0 ? (
     <div className="rw-text-center">
-      {t('No companies yet. ')}
-      <Link to={routes.newCompany()} className="rw-link">
-        <Trans i18nKey={'CreateOneFemale'}>{'Create one?'}</Trans>
+      {t('No drivers yet. ')}
+      <Link to={routes.newDriver()} className="rw-link">
+        <Trans i18nKey={'CreateOneMale'}>{'Create one?'}</Trans>
       </Link>
     </div>
   ) : (
     <>
-      <Companies companies={companies.companies} count={companies.count} />
+      <Drivers drivers={drivers.drivers} count={drivers.count} />
       <div className="flex justify-evenly">
         <Pagination
-          count={companies.count}
+          count={drivers.count}
           page={page}
           perPage={limit}
-          linkTo={routes.companiesPaged}
+          linkTo={routes.driversPaged}
         />
         <div className="flex">
           <div className="page-link relative block rounded-md border-0 bg-transparent py-1.5 px-3 text-gray-800 outline-none">
             {t('Records per Page')}
           </div>
-          <PageLimitSelector limit={limit} routeTo={routes.companiesPaged} />
+          <PageLimitSelector limit={limit} routeTo={routes.driversPaged} />
         </div>
       </div>
     </>

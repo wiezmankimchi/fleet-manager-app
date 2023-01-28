@@ -16,15 +16,15 @@ export const QUERY = gql`
       companies {
         id
         name
-        address1
-        address2
-        city
-        zipcode
-        country
-        createdAt
-        updateAt
-        createdBy
-        updatedBy
+        # address1
+        # address2
+        # city
+        # zipcode
+        # country
+        # createdAt
+        # updateAt
+        # createdBy
+        # updatedBy
       }
     }
   }
@@ -53,12 +53,17 @@ export const Failure = ({ error }) => (
   <div className="rw-cell-error">{error?.message}</div>
 )
 
-export const Success = ({ companies, companyId, name }) => {
+export const Success = ({ companies, companyId, name, valueAsNumber }) => {
+  const { t, i18n } = useTranslation()
+  const defaultValue = companyId
+
   return (
     <LOVSelectField
       data={companies.companies}
       name={name}
       defaultValue={companyId}
+      required={true}
+      valueAsNumber={valueAsNumber}
     />
   )
 }

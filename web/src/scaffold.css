@@ -300,6 +300,9 @@
 .rw-table tr:nth-child(odd) th {
   background-color: #f7fafc;
 }
+.rw-table td span.overdue{
+  @apply bg-red-300 text-red-900 font-semibold p-2;
+}
 .rw-table thead tr {
   color: #4a5568;
 }
